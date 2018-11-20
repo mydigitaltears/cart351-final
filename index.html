@@ -9,17 +9,13 @@
     </style>
   </head>
   <body>
-		<canvas id="canvas" ></canvas>
+		<canvas id="canvas" width="640" height="480" style="border:1px solid #000000;"></canvas>
     <script>
     var canvas = document.getElementById('canvas');
   	var context = canvas.getContext('2d');
 
   	var radius = 4;
   	var dragging = false;
-
-
-  	canvas.width = window.innerWidth;
-  	canvas.height = window.innerHeight;
 
   	context.lineWidth = radius*2;
 

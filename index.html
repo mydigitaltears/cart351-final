@@ -1,6 +1,11 @@
 <!DOCTYPE HTML>
 <html>
   <head>
+  <script src="js/canvas2image.js"></script>
+  <script src="js/libraries/p5.js"></script>
+  <script src="js/libraries/p5.sound.js"></script>
+  <script src="js/libraries/p5.play.js"></script>
+  <script src="js/libraries/p5.dom.js"></script>
     <style>
       body {
         margin: 0px;
@@ -9,43 +14,72 @@
     </style>
   </head>
   <body>
-		<canvas id="canvas" width="640" height="480" style="border:1px solid #000000;"></canvas>
+		<!--<canvas id="canvas" width="640" height="480" style="border:1px solid #000000;"></canvas>-->
     <script>
-    var canvas = document.getElementById('canvas');
-  	var context = canvas.getContext('2d');
+      var c;
 
-  	var radius = 4;
-  	var dragging = false;
+      function setup() {
+        c = createCanvas(600,480);
+        var x = (windowWidth - width) / 2;
+        var y = (windowHeight - height) / 2;
+        c.position(x, y);
+        background(102);
+      }
 
-  	context.lineWidth = radius*2;
+      function draw() {
+        strokeWeight(4);
+        stroke(255);
+        if (mouseIsPressed === true) {
+          line(mouseX, mouseY, pmouseX, pmouseY);
+        }
+      }
 
-  	var putPoint = function(e){
-  		if(dragging){
-  			context.lineTo(e.offsetX, e.offsetY);
-  			context.stroke();
-  			context.beginPath();
-  			//context.arc(e.clientX, e.clientY, radius, 0, Math.PI*2);
-  			context.arc(e.offsetX, e.offsetY, radius, 0, Math.PI*2);
-  			context.fill();
-  			context.beginPath();
-  			context.moveTo(e.offsetX, e.offsetY);
-  		}
-  	}
+      function saveC() {
+        saveCanvas(c, 'myCanvas', 'png');
+      }
 
-  	var engage = function(e){
-  		dragging = true;
-  		putPoint(e);
-  	}
-
-  	var disengage = function(){
-  		dragging = false;
-  		context.beginPath();
-  	}
-
-  	canvas.addEventListener('mousedown', engage);
-  	canvas.addEventListener('mousemove',putPoint);
-  	canvas.addEventListener('mouseup', disengage);
+    // var canvas = document.getElementById('canvas');
+  	// var context = canvas.getContext('2d');
+    //
+  	// var radius = 4;
+  	// var dragging = false;
+    //
+  	// context.lineWidth = radius*2;
+    //
+  	// var putPoint = function(e){
+  	// 	if(dragging){
+  	// 		context.lineTo(e.offsetX, e.offsetY);
+  	// 		context.stroke();
+  	// 		context.beginPath();
+  	// 		//context.arc(e.clientX, e.clientY, radius, 0, Math.PI*2);
+  	// 		context.arc(e.offsetX, e.offsetY, radius, 0, Math.PI*2);
+  	// 		context.fill();
+  	// 		context.beginPath();
+  	// 		context.moveTo(e.offsetX, e.offsetY);
+  	// 	}
+  	// }
+    //
+  	// var engage = function(e){
+  	// 	dragging = true;
+  	// 	putPoint(e);
+  	// }
+    //
+  	// var disengage = function(){
+  	// 	dragging = false;
+  	// 	context.beginPath();
+  	// }
+    //
+    // function to_image(){
+    //   var canvas = document.getElementById("canvas");
+    //   document.getElementById("theimage").src = canvas.toDataURL();
+    //   Canvas2Image.saveAsPNG(canvas);
+    // }
+    //
+  	// canvas.addEventListener('mousedown', engage);
+  	// canvas.addEventListener('mousemove',putPoint);
+  	// canvas.addEventListener('mouseup', disengage);
 
     </script>
+    <div><button onclick="saveC()">Draw to Image</button></div>
   </body>
 </html>

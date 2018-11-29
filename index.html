@@ -6,37 +6,52 @@
   <script src="js/libraries/p5.sound.js"></script>
   <script src="js/libraries/p5.play.js"></script>
   <script src="js/libraries/p5.dom.js"></script>
+  <script src="js/script.js"></script>
     <style>
       body {
-        margin: 0px;
-        padding: 0px;
+        background-color:rgb(255);
+        font-family: 'Niramit', sans-serif;
+        text-align: center;
+        color: rgb(49, 50, 64);
+        text-decoration: initial;
+        margin:auto;
+      }
+      #items{
+        font-family: 'Gloria Hallelujah', cursive;
+        position:absolute;
+        padding-bottom: 0px;
+        right:0%;
+        text-align: center;
+        background-color:rgb(255);
+      }
+      .button_style{
+        border-radius: 60px;
+        font-family: 'Gloria Hallelujah', cursive;
+        width: 240px;
+        height: 50px;
+        font-size: 24px;
+        background-color:rgb(220, 220, 220);
+        text-decoration:none;
       }
     </style>
   </head>
   <body>
 		<!--<canvas id="canvas" width="640" height="480" style="border:1px solid #000000;"></canvas>-->
     <script>
-      var c;
+      window.onload = function(){
+        document.getElementById("butt1").addEventListener("mouseover", opa_in_butt1)
+        document.getElementById("butt1").addEventListener("mouseout", opa_out_butt1)
 
-      function setup() {
-        c = createCanvas(600,480);
-        var x = (windowWidth - width) / 2;
-        var y = (windowHeight - height) / 2;
-        c.position(x, y);
-        background(102);
-      }
-
-      function draw() {
-        strokeWeight(4);
-        stroke(255);
-        if (mouseIsPressed === true) {
-          line(mouseX, mouseY, pmouseX, pmouseY);
+        function opa_in_butt1(event)
+        {
+            document.getElementById("butt1").style.background="rgb(150, 150, 150)";
+        }
+        function opa_out_butt1(event)
+        {
+            document.getElementById("butt1").style.background="rgb(220, 220, 220)";
         }
       }
 
-      function saveC() {
-        saveCanvas(c, 'myCanvas', 'png');
-      }
 
     // var canvas = document.getElementById('canvas');
   	// var context = canvas.getContext('2d');
@@ -80,6 +95,8 @@
   	// canvas.addEventListener('mouseup', disengage);
 
     </script>
-    <div><button onclick="saveC()">Draw to Image</button></div>
+    <div id="items">
+      <!--<button onclick="saveC()" id="butt1" class="button_style">Draw to Image</button> -->
+    </div>
   </body>
 </html>

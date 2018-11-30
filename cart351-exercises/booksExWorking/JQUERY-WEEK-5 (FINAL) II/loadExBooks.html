@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+   <title>JSON LOAD EX</title>
+  <script src = "jquery/jquery-3.3.1.min.js"></script>
+   <script>
+   $(document).ready(function(){
+   let header = $('header');
+   let section = $('section');
+   let loaded=false;
+
+   $("#getData").click(function(event){
+     if(loaded ===false){
+          console.log("clicked");
+        }
+        else{
+          console.log("data was loaded");
+        }
+    });
+ });
+
+   </script>
+  </head>
+
+  <style>
+
+html {
+  font-family: 'helvetica neue', helvetica, arial, sans-serif;
+}
+
+body {
+  width: 100%;
+}
+/* header styles */
+
+h1 {
+  margin-left:30vw;
+}
+
+
+header p {
+  font-weight: bold;
+  margin-left:30vw;
+}
+section{
+  margin-left:25vw;
+}
+
+/* section styles */
+
+section article {
+  margin-left:2%;
+  margin-right:20%;
+  margin-bottom:2%;
+  background:#b4e4f6;
+  padding:2%;
+}
+
+section p {
+  font-size:1em;
+  font-weight: bold;
+}
+
+section ul {
+  margin-top: 0;
+  font-size:1em;
+}
+
+h2 {
+  font-size: 2.5rem;
+  letter-spacing: -5px;
+  margin-bottom: 10px;
+}
+#getData{
+  background:orange;
+  width:100px;
+  margin:2%;
+}
+  </style>
+
+  <body>
+  <input type="button" id="getData" value="Load Data" />
+      <header>
+
+      </header>
+
+      <section>
+
+      </section>
+
+
+  </body>
+</html>

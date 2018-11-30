@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> Object Initializer Example</title>
+
+</head>
+<body>
+
+<script>
+// note how we can have a value of a property being another object ...
+
+let bookAsAJSON_String = {"Title": "One Flew Over the Cuckoo's Nest",
+    "Author": "Kem Kesey",
+    "Genre": "Psychological Fiction",
+    "Detail": {
+        "Publisher": "Berkley; Reprint edition",
+        "Publication_Year": 1963,
+        "ISBN": "0451163966",
+        "Language": "English",
+        "Pages": 272
+    },
+    "Price": [  {  "type": "Hardcover", "price": 16.65  }, { "type": "Kidle Edition", "price": 7.03  } ]
+  }
+  //using dot notation
+  document.write("<br />");
+  document.write("USING DOT NOTATION::: ");
+  document.write("<br />");
+  document.write("****************");
+  document.write("<br />");
+  document.write("the author::: "+bookAsAJSON_String.Author);
+  document.write("<br />");
+  document.write("first element in the array labelled as Price::: "+bookAsAJSON_String.Price[0].type+","+bookAsAJSON_String.Price[0].price);
+  document.write("<br />");
+  //using bracket notation
+  document.write("<br />");
+  document.write("USING BRACKET NOTATION::: ");
+  document.write("<br />");
+  document.write("****************");
+  document.write("<br />");
+  document.write("the author::: "+bookAsAJSON_String['Author']);
+  document.write("<br />");
+  document.write("first element in the array labelled as Price::: "+bookAsAJSON_String['Price'][0]['type']+","+bookAsAJSON_String.Price[0].price);
+
+</script>
+</body>
+</html>

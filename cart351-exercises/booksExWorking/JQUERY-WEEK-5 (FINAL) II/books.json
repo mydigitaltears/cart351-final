@@ -1,0 +1,32 @@
+{
+  "Label":"Sample Books",
+  "SubLabel":"This data is loaded from a json file::",
+  "BookItems":
+  [
+    {"Title": "One Flew Over the Cuckoo's Nest",
+    "Author": "Kem Kesey",
+    "Genre": "Psychological Fiction",
+    "Detail": {
+        "Publisher": "Berkley; Reprint edition",
+        "Publication_Year": 1963,
+        "ISBN": "0451163966",
+        "Language": "English",
+        "Pages": 272
+    },
+    "Price": [  {  "type": "Hardcover", "price": 16.65  }, { "type": "Kindle Edition", "price": 7.03  } ]
+  },
+
+  {"Title": "A Clockwork Orange",
+      "Author": "Anthony Burgess",
+      "Genre": "Psychological Fiction",
+      "Detail": {
+          "Publisher": "Penguin Modern Classics; Later Printing Edition",
+          "Publication_Year": 2000,
+          "ISBN":  "0141182601",
+          "Language": "English",
+          "Pages": 176
+      },
+      "Price": [  {  "type": "Hardcover", "price": 18.00  }, { "type": "Kindle Edition", "price": 6.40 } ]
+    }
+   ]
+  }

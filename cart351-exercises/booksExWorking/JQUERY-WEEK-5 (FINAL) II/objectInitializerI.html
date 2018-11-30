@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> Object Initializer Example</title>
+
+</head>
+<body>
+
+<script>
+// note how we can have a value of a property being another object ...
+//EX 1
+let book =
+{Title: "One Flew Over the Cuckoo's Nest",
+    Author: "Kem Kesey",
+    Genre: "Psychological Fiction",
+    Detail: {
+        Publisher: "Berkley; Reprint edition",
+        Publication_Year: 1963,
+        ISBN: "0451163966",
+        Language: "English",
+        Pages: 272
+    }
+  }
+  document.write("** single book object **");
+  document.write("<br />");
+  document.write("book title: "+ book.Title);
+  document.write("<br />");
+  document.write("book author: "+ book.Author);
+  document.write("<br />");
+  document.write("book publisher: "+ book.Detail.Publisher);
+
+// access and changing properties is allowed ...
+  book.Author = "Ken Kesey";
+  document.write("<br />");
+  document.write("book author rev: "+ book.Author);
+  document.write("<br />");
+
+</script>
+</body>
+</html>

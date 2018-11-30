@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> Object Initializer Example</title>
+
+</head>
+<body>
+
+<script>
+// note how we can have a value of a property being another object ...
+
+// EX 2:: can have an array of objects ...
+  let books = [
+
+    {Title: "One Flew Over the Cuckoo's Nest",
+        Author: "Kem Kesey",
+        Genre: "Psychological Fiction",
+        Detail: {
+            Publisher: "Berkley; Reprint edition",
+            Publication_Year: 1963,
+            ISBN: "0451163966",
+            Language: "English",
+            Pages: 272
+        }
+      },
+      {Title: "A Clockwork Orange",
+          Author: "Anthony Burgess",
+          Genre: "Psychological Fiction",
+          Detail: {
+              Publisher: "Penguin Modern Classics; Later Printing Edition",
+              Publication_Year: 2000,
+              ISBN:  "0141182601",
+              Language: "English",
+              Pages: 176
+          }
+        }
+    ]
+// use array index to access a given object in the array
+//can chain the dot notation
+    document.write("<br />");
+    document.write("** books in an array **");
+    document.write("<br />");
+    document.write("number of books:: "+ books.length);
+    document.write("<br />");
+    document.write("book 1 title: "+ books[0].Title);
+    document.write("<br />");
+    document.write("book 2 author: "+ books[1].Author);
+    document.write("<br />");
+    document.write("book 1 publisher: "+ books[0].Detail.Publisher);
+    document.write("<br />");
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<!-- https://home.openweathermap.org/ -->
+<html>
+<head>
+<title>Open Weather Example</title>
+<style>
+body{
+  width:100%;
+  margin-left:2%;
+}
+
+h2{
+  background:white;
+    text-align:center;
+    color:#9e66b4;
+}
+#ResWeather{
+  width:44%;
+  clear:both;
+  margin-top:2%;
+  margin-left:8%;
+}
+.container {
+    background:#9e66b4;
+    overflow:hidden;
+
+}
+ul{
+  background:#cdb2d7;
+  color:black;
+  padding:4%;
+  list-style:none;
+  margin-bottom:1%;
+  font-size:1.2em;
+}
+img{
+  float:left;
+}
+.pRes{
+  color:white;
+
+}
+.pContainer{
+    float:left;
+    padding-left:2%;
+    font-size:1.2em;
+}
+.searchCrit{
+  display:inline-block;
+  margin-right:3%;
+  background:#cdb2d7;
+  padding:2%;
+  border-color: #9e66b4;
+  border-width:2px;
+  border-style: solid;
+  width:25%;
+}
+.searchCrit p {
+  background:white;
+  color:#9e66b4;
+  font-weight: bold;
+  padding:2px;
+  font-size:1.2em;
+}
+</style>
+<script src = "jquery/jquery-3.3.1.min.js"></script>
+<script>
+$(document).ready(function(){
+//http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID={APIKEY}
+let myKey = "0bef928982350078b0d564afdd383f25";
+
+
+$("#searchButton").click(getWeatherByCity);
+$("#buttonLocation").click(getWeatherByLoc);
+
+/**** get weather by user location **/
+function getWeatherByLoc(){
+console.log("get loc");
+}
+
+
+/**** get weather by city input **/
+function getWeatherByCity(){
+console.log("get city");
+} //getWeather
+
+});
+</script>
+</head>
+
+<body>
+  <h1>
+  	Enter in the search criteria for weather:
+  </h1>
+
+<div class = "searchCrit">
+  <p>Type in a search keyword:</p>
+  <input type="text" id="citySearch" value="city" />
+  <input type="button" value="Search!" id="searchButton" />
+</div>
+<div class = "searchCrit">
+  <p>Or search by your location::: </p>
+  <input type="button" value="Search!" id="buttonLocation" />
+</div>
+
+
+  <div id  = "ResWeather"> </div>
+
+</body>
+</html>

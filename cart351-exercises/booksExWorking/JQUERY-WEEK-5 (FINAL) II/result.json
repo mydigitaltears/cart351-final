@@ -1,0 +1,12 @@
+[{
+"name": "Maria Johnson",
+"age" : "22",
+"gender": "female",
+"nationality":"british"
+},
+{
+"name": "Sandra Helson",
+"age" : "45",
+"gender": "female",
+"nationality":"brazilian"
+}]

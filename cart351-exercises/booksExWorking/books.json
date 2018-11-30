@@ -1,32 +1,34 @@
 {
-  "Label":"Sample Books",
-  "SubLabel":"This data is loaded from a json file::",
+  "Label":"My Github commits",
+  "SubLabel":"This data is loaded from a json file:",
   "BookItems":
   [
-    {"Title": "One Flew Over the Cuckoo's Nest",
-    "Author": "Kem Kesey",
-    "Genre": "Psychological Fiction",
-    "Detail": {
-        "Publisher": "Berkley; Reprint edition",
-        "Publication_Year": 1963,
-        "ISBN": "0451163966",
-        "Language": "English",
-        "Pages": 272
+    {"Day": "Day 1",
+    "Date": "October 13, 2018",
+    "NumberOfCommits": "2",
+    "GithubRepository": "cart351-assignment2",
+    "DayOfTheWeek": "Saturday"
     },
-    "Price": [  {  "type": "Hardcover", "price": 16.65  }, { "type": "Kindle Edition", "price": 7.03  } ]
-  },
 
-  {"Title": "A Clockwork Orange",
-      "Author": "Anthony Burgess",
-      "Genre": "Psychological Fiction",
-      "Detail": {
-          "Publisher": "Penguin Modern Classics; Later Printing Edition",
-          "Publication_Year": 2000,
-          "ISBN":  "0141182601",
-          "Language": "English",
-          "Pages": 176
-      },
-      "Price": [  {  "type": "Hardcover", "price": 18.00  }, { "type": "Kindle Edition", "price": 6.40 } ]
+    {"Day": "Day 2",
+    "Date": "October 14, 2018",
+    "NumberOfCommits": "6",
+    "GithubRepository": "cart351-assignment2",
+    "DayOfTheWeek": "Sunday"
+    },
+
+    {"Day": "Day 3",
+    "Date": "October 15, 2018",
+    "NumberOfCommits": "9",
+    "GithubRepository": "cart351-assignment2(8) + cart253-2018b(1)",
+    "DayOfTheWeek": "Monday"
+    },
+
+    {"Day": "Day 4",
+    "Date": "October 16, 2018",
+    "NumberOfCommits": "6",
+    "GithubRepository": "cart253-2018b",
+    "DayOfTheWeek": "Tuesday"
     }
-   ]
-  }
+  ]
+}

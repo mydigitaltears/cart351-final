@@ -9,30 +9,55 @@
    let header = $('header');
    let section = $('section');
    let loaded=false;
+   let searchItem='';
 
-   $("#getData").click(function(event){
-     if(loaded ===false){
+   // our array of each book objects
+   let books = '';
+   let sampleBookArticle = '';
+   let sampleBookH2 ='';
+   let samplePara1 = '';
+   let samplePara2 = '';
+   let samplePara3 = '';
+   let samplePara4 = '';
+   let sampleList= '';
+
+
+   $("#searchButton").click(getData2);
+   /**** function callback from button ***/
+   function getData2()
+   {
+     $("#searchButton").empty(); //empty
+     searchItem = $("#searchText").val()-1;
+     console.log(searchItem);
+
+
           console.log("clicked");
-          $.getJSON('books.json',function(data) {
+          let d = $.getJSON('books.json',function(data) {
           //success
             //step 1: console.log the result
             console.log(data);
             //set boolean to true
+            if(loaded ===false){
+              //step 2: display header on html page
+              populateHeader(data);
+            }
+            else{
+              console.log("data was loaded");
+            }
+            if(loaded ===true){
+              clear(data);
+            }
             loaded=true;
-            //step 2: display header on html page
-            populateHeader(data);
             //step 3: display the books ....
+
             showBooks(data);
           })
           //fail
           .fail(function() {
             console.log( "error" );
           });
-        }
-        else{
-          console.log("data was loaded");
-        }
-    });
+   }//function
+
     function populateHeader(data){
       let sampleHeader = $("<h1>");
       $(sampleHeader).text(data.Label);
@@ -49,44 +74,42 @@
 
     function showBooks(data){
     // our array of each book objects
-    let books = data['BookItems'];
-
-    for (var i = 0; i < books.length; i++) {
-      let sampleBookArticle = $('<article>');
-      let sampleBookH2 =('<h1>');
-      let samplePara1 = $("<p>");
-      let samplePara2 = $("<p>");
-      let samplePara3 = $("<p>");
-      let samplePara4 = $("<p>");
-      let sampleList= $("<ul>");
+      books = data['BookItems'];
+      sampleBookArticle = $('<article>');
+      sampleBookH2 = $('<h2>');
+      samplePara1 = $("<p>");
+      samplePara2 = $("<p>");
+      samplePara3 = $("<p>");
+      samplePara4 = $("<p>");
+      sampleList= $("<ul>");
 
 
-      $(sampleBookH2).text(books[i].Title);
-      $(samplePara1).text(books[i].Author);
-      $(samplePara2).text(books[i].Genre);
-      $(samplePara3).text(books[i].Detail.Publisher);
-      $(samplePara4).text(books[i].Detail.Publication_Year);
-
-
-      let bookPrices = books[i].Price;
-
-
-      for (let j = 0; j < bookPrices.length; j++) {
-        let listItem = $('<li>');
-        $(listItem).text("type:: "+ bookPrices[j].type+" & price:: $"+bookPrices[j].price);
-        $(listItem).appendTo(sampleList);
-      }
+      $(sampleBookH2).text(books[searchItem].Day);
+      $(samplePara1).text("Date: "+books[searchItem].Date);
+      $(samplePara2).text("Number of commits: "+books[searchItem].NumberOfCommits);
+      $(samplePara3).text("Github repository: "+books[searchItem].GithubRepository);
+      $(samplePara4).text("Day of the week: "+books[searchItem].DayOfTheWeek);
 
       $(sampleBookH2).appendTo(sampleBookArticle);
       $(samplePara1).appendTo(sampleBookArticle);
       $(samplePara2).appendTo(sampleBookArticle);
       $(samplePara3).appendTo(sampleBookArticle);
       $(samplePara4).appendTo(sampleBookArticle);
-      $(sampleList).appendTo(sampleBookArticle);
+      //$(sampleList).appendTo(sampleBookArticle);
 
       $(section).append(sampleBookArticle);
-    } //books
-  }//function
+    }//function
+
+    function clear(data){
+
+      $(sampleBookArticle).remove();
+      $(sampleBookH2).remove();
+      $(samplePara1).remove();
+      $(samplePara2).remove();
+      $(samplePara3).remove();
+      $(samplePara4).remove();
+      $(sampleList).remove();
+    }
  });
 
    </script>
@@ -94,62 +117,71 @@
 
   <style>
 
-html {
-  font-family: 'helvetica neue', helvetica, arial, sans-serif;
-}
+    html {
+      font-family: 'helvetica neue', helvetica, arial, sans-serif;
+    }
 
-body {
-  width: 100%;
-}
-/* header styles */
+    body {
+      width: 100%;
+      background:black;
+      color:white;
+    }
+    /* header styles */
 
-h1 {
-  margin-left:30vw;
-}
+    h1 {
+      margin-left:30vw;
+      color: white;
+    }
 
+    header p {
+      font-weight: bold;
+      margin-left:30vw;
+      color: white;
+    }
+    section{
+      margin-left:25%;
+      margin-right:25%;
+    }
 
-header p {
-  font-weight: bold;
-  margin-left:30vw;
-}
-section{
-  margin-left:25vw;
-}
+    /* section styles */
 
-/* section styles */
+    section article {
+      margin-left:2%;
+      margin-right:20%;
+      margin-bottom:2%;
+      background:purple;
+      padding:2%;
+    }
 
-section article {
-  margin-left:2%;
-  margin-right:20%;
-  margin-bottom:2%;
-  background:#b4e4f6;
-  padding:2%;
-}
+    section p {
+      font-size:1em;
+      font-weight: bold;
+    }
 
-section p {
-  font-size:1em;
-  font-weight: bold;
-}
+    section ul {
+      margin-top: 0;
+      font-size:1em;
+    }
 
-section ul {
-  margin-top: 0;
-  font-size:1em;
-}
-
-h2 {
-  font-size: 2.5rem;
-  letter-spacing: -5px;
-  margin-bottom: 10px;
-}
-#getData{
-  background:orange;
-  width:100px;
-  margin:2%;
-}
+    h2 {
+    }
+    #searchButton{
+      background:orange;
+      width:100px;
+    }
+    .searchCrit{
+      margin-left:25%;
+      margin-right:25%;
+      text-align: center;
+    }
   </style>
 
   <body>
-  <input type="button" id="getData" value="Load Data" />
+    <div class = "searchCrit">
+      <p>Type in the number of the day (1 to 4)</p>
+      <input type="text" id="searchText" value="search Item" />
+      <input type="button" value="Search!" id="searchButton" />
+    </div>
       <header>
 
       </header>

@@ -19,37 +19,23 @@
       //get the context
       let context = canvas.getContext("2d");
 
-      //NEW::
-      let mouseAngleFromCenter =0;
-      // variables regarding the circle that the circleObject will move around
-      let cntrRadius = 100;
-      let cntrX =canvas.width/2;
-      let cntrY = canvas.height/2;
 
       let xMouse = 0;
       let yMouse = 0;
 
-      let NewS = (new CustomSquare(100,100,10,10,255,125,0,1.0));
-
-
-      //helper function to get the angle
-      const getAngle = function(mouseX,mouseY) {
-        //onsole.log(mouseX)
-        //console.log(mouseY)
-        var cx = canvas.width / 2; //centerX
-        var cy = canvas.height / 2;//centerY
-        // calculate the angle that mouse is in relation to the center ...
-        return Math.atan2(mouseY - cy, mouseX - cx); //aTan2 -> angle
-      };
+      let NewS = new CustomSquare(0,0,30,30,255,125,0,1.0,0);
 
       // add event listener to canvas and get angle...
       canvas.addEventListener("mousemove",function(event){
-      console.log("mousemove");
-      // get mouse
-      xMouse = event.clientX;
-      yMouse = event.clientY;
-      mouseAngleFromCenter = getAngle(xMouse,yMouse);
-      //get angle from the center using aTan ...
+        console.log("mousemove");
+        // get mouse
+        xMouse = event.clientX;
+        yMouse = event.clientY;
+      });
+
+      canvas.addEventListener("mousedown",function(event){
+        console.log("mouse is in canvas");
+        NewS.hitTest(event);
       });
 
 
@@ -70,7 +56,7 @@
       }
 
       // square object
-      function CustomSquare(x,y,w,h,redC,greenC,blueC,alphaC){
+      function CustomSquare(x,y,w,h,redC,greenC,blueC,alphaC,theta){
         this.x =x;
         this.y =y;
         this.w =w;
@@ -79,26 +65,29 @@
         this.greenC = greenC;
         this.blueC = blueC;
         this.alphaC = alphaC;
+        this.theta =0;
+        this.pressed =false;
 
         //display
         this.display = function(){
           this.col = "rgba("+this.redC+","+this.greenC+","+this.blueC+","+this.alphaC+")";
-          this.strokeCol = "rgba("+255+","+255+","+255+","+(0.65)+")";
-
-          context.beginPath();
           context.fillStyle = this.col;
-          context.strokeStyle = this.strokeCol;
-          context.lineWidth = 2;
-          context.rect(this.x,this.y,this.w,this.h);
-          context.fill();
-          context.stroke();
-          context.closePath();
+
+          context.save();
+          // translate the origin to the x and y positions....
+          context.translate(xMouse,yMouse);
+          // rotate the canvas -> but around the center of the rect
+          context.rotate(this.theta);
+
+          if(this.pressed ===true){
+            this.theta+=0.1;
+          }
+          context.fillRect(this.x,this.y,this.w,this.h);
+          context.restore();
         }
         this.update =function(){
-          //this.x = Math.cos(mouseAngleFromCenter+this.theta)*cntrRadius + cntrX;
-          //this.y = Math.sin(mouseAngleFromCenter+this.theta)*cntrRadius + cntrY;
-          this.x = xMouse - this.w/2;
-          this.y = yMouse - this.h/2;
+          this.x = Math.pow(xMouse,1/2);
+          this.y = Math.pow(yMouse,1/2);
           if(this.x>this.y){
             this.w = xMouse/2;
             this.h = xMouse/2;
@@ -107,7 +96,10 @@
             this.w = yMouse/2;
             this.h = yMouse/2;
           }
-          //this.theta+=this.angularSpeed;
+        }
+        this.hitTest = function(event){
+            console.log(`mouse clicked`);
+            this.pressed=!this.pressed;
         }
       }
     }

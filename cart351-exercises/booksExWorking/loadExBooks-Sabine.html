@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+   <title>JSON LOAD EX</title>
+  <script src = "jquery/jquery-3.3.1.min.js"></script>
+   <script>
+   $(document).ready(function(){
+   let header = $('header');
+   let section = $('section');
+   let loaded=false;
+
+   $("#getData").click(function(event){
+     if(loaded ===false){
+          console.log("clicked");
+          $.getJSON('books.json',function(data) {
+          //success
+            //step 1: console.log the result
+            console.log(data);
+            //set boolean to true
+            loaded=true;
+            //step 2: display header on html page
+            populateHeader(data);
+            //step 3: display the books ....
+            showBooks(data);
+          })
+          //fail
+          .fail(function() {
+            console.log( "error" );
+          });
+        }
+        else{
+          console.log("data was loaded");
+        }
+    });
+    function populateHeader(data){
+      let sampleHeader = $("<h1>");
+      $(sampleHeader).text(data.Label);
+      $(sampleHeader).appendTo(header);
+
+
+      let samplePara = $("<p>");
+      console.log(data.SubLabel);
+      $(samplePara).text(data.SubLabel);
+      $(samplePara).appendTo(header);
+
+    }
+
+
+    function showBooks(data){
+    // our array of each book objects
+    let books = data['BookItems'];
+
+    for (var i = 0; i < books.length; i++) {
+      let sampleBookArticle = $('<article>');
+      let sampleBookH2 =('<h1>');
+      let samplePara1 = $("<p>");
+      let samplePara2 = $("<p>");
+      let samplePara3 = $("<p>");
+      let samplePara4 = $("<p>");
+      let sampleList= $("<ul>");
+
+
+      $(sampleBookH2).text(books[i].Title);
+      $(samplePara1).text(books[i].Author);
+      $(samplePara2).text(books[i].Genre);
+      $(samplePara3).text(books[i].Detail.Publisher);
+      $(samplePara4).text(books[i].Detail.Publication_Year);
+
+
+      let bookPrices = books[i].Price;
+
+
+      for (let j = 0; j < bookPrices.length; j++) {
+        let listItem = $('<li>');
+        $(listItem).text("type:: "+ bookPrices[j].type+" & price:: $"+bookPrices[j].price);
+        $(listItem).appendTo(sampleList);
+      }
+
+      $(sampleBookH2).appendTo(sampleBookArticle);
+      $(samplePara1).appendTo(sampleBookArticle);
+      $(samplePara2).appendTo(sampleBookArticle);
+      $(samplePara3).appendTo(sampleBookArticle);
+      $(samplePara4).appendTo(sampleBookArticle);
+      $(sampleList).appendTo(sampleBookArticle);
+
+      $(section).append(sampleBookArticle);
+    } //books
+  }//function
+ });
+
+   </script>
+  </head>
+
+  <style>
+
+html {
+  font-family: 'helvetica neue', helvetica, arial, sans-serif;
+}
+
+body {
+  width: 100%;
+}
+/* header styles */
+
+h1 {
+  margin-left:30vw;
+}
+
+
+header p {
+  font-weight: bold;
+  margin-left:30vw;
+}
+section{
+  margin-left:25vw;
+}
+
+/* section styles */
+
+section article {
+  margin-left:2%;
+  margin-right:20%;
+  margin-bottom:2%;
+  background:#b4e4f6;
+  padding:2%;
+}
+
+section p {
+  font-size:1em;
+  font-weight: bold;
+}
+
+section ul {
+  margin-top: 0;
+  font-size:1em;
+}
+
+h2 {
+  font-size: 2.5rem;
+  letter-spacing: -5px;
+  margin-bottom: 10px;
+}
+#getData{
+  background:orange;
+  width:100px;
+  margin:2%;
+}
+  </style>
+
+  <body>
+  <input type="button" id="getData" value="Load Data" />
+      <header>
+
+      </header>
+
+      <section>
+
+      </section>
+
+
+  </body>
+</html>

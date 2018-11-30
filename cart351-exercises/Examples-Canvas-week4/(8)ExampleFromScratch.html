@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Examples </title>
+  <style>
+  body{
+    margin:0;
+    padding:0;
+  }
+  canvas{
+    background:black;
+}
+  </style>
+
+  <script>
+  window.onload = function(){
+
+
+// get the canvas
+let canvas = document.getElementById("testCanvas");
+
+//get the context
+let context = canvas.getContext("2d");
+//NEW::
+canvas.addEventListener("mousedown",(event)=>{
+console.log("mouse is in canvas");
+for(let i=0; i< shapeList.length;i++){
+  shapeList[i].hitTest(event);
+}
+
+
+});
+
+
+
+//declare an array of shapes
+let shapeList = [];
+//declare the number of shapes we want
+const NUM_SHAPES=5;
+//fill the array with shapes
+for(let i=0; i< NUM_SHAPES;i++){
+  let r = (Math.floor((Math.random() * 255) + 1));
+  let g = (Math.floor((Math.random() * 255) + 1));
+  let b = (Math.floor((Math.random() * 255) + 1));
+  //put in a line and spread out a bit...
+  shapeList.push(new CustomShape(i*60+100,canvas.height/2,50,50,r,g,b,1.0,(i%5)+1,(i%6)+2,0,i));
+}
+
+requestAnimationFrame(run);
+
+//our run method
+function run(){
+
+  context.clearRect(0,0,canvas.width,canvas.height);
+  for(let i=0; i< NUM_SHAPES;i++){
+
+    shapeList[i].display();
+  }
+
+  //recursive call
+  requestAnimationFrame(run);
+
+}
+
+  function CustomShape(x,y,w,h,r,g,b,a,speedX,speedY,theta,id){
+    //member properties
+    this.x =x;
+    this.y =y;
+    this.w = w;
+    this.h=h;
+    this.r =r;
+    this.g =g;
+    this.b=b;
+    this.a=a;
+    this.innerW = this.w/2;
+    this.innerH = this.h/2;
+    //add in when we update
+    this.speedX = speedX;
+    this.speedY = speedY;
+    this.innerX = this.x+this.innerW/2;
+    this.innerY = this.y+this.innerH/2;
+    this.theta =0;
+    this.rectID = id;
+    this.pressed =false;
+    //display method
+    this.display = function(){
+      //lets draw something
+    this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+    context.fillStyle = this.col;
+    // save current state
+    context.save();
+    // translate the origin to the x and y positions....
+    context.translate(this.x,this.y);
+    // rotate the canvas -> but around the center of the rect
+    context.rotate(this.theta);
+
+    //2ND PART
+    if(this.pressed ===true){
+    //increment theta
+    this.theta+=0.02;
+  }
+    // the coordinates are now relative to the new origin
+    // please note: rects draw from corner so we want to shift it
+    //up and left so that x,y is in its center
+    context.fillRect(-this.w/2,-this.h/2,this.w,this.h);
+    //do same for inner
+    context.clearRect(-this.w/2+this.innerW/2,-this.w/2+this.innerW/2,this.innerW,this.innerH);
+    //restore state
+    context.restore();
+
+  }
+  this.hitTest = function(event){
+    //modify this a bit slightly ...  r== this.w/2
+    if(Math.sqrt(Math.pow((event.clientX-this.x),2) + Math.pow((event.clientY - this.y),2))< this.w/2){
+      console.log(`rect ${this.rectID} has mouse clicked`);
+      this.pressed=!this.pressed;
+    }
+  }
+}//end obj
+
+}//end onload
+  </script>
+</head>
+<body>
+  <canvas id = "testCanvas" width = 500 height =500></canvas>
+</body>
+</html>

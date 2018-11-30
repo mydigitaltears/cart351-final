@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Examples </title>
+  <style>
+  body{
+    margin:0;
+    padding:0;
+  }
+  canvas{
+    background:black;
+}
+  </style>
+
+  <script>
+  window.onload = function(){
+
+
+// get the canvas
+let canvas = document.getElementById("testCanvas");
+
+//get the context
+let context = canvas.getContext("2d");
+//declare a shape
+let myShape = new CustomShape(canvas.width/2,canvas.height/2,50,50,255,0,0,1.0);
+
+myShape.display();
+
+function CustomShape(x,y,w,h,r,g,b,a){
+    //member properties
+    this.x =x;
+    this.y =y;
+    this.w = w;
+    this.h=h;
+    this.r =r;
+    this.g =g;
+    this.b=b;
+    this.a=a;
+    this.innerW = this.w/2;
+    this.innerH = this.h/2;
+    //add in when we update
+    this.speedX = 1;
+    this.speedY = 4;
+    this.innerX = this.x+this.innerW/2;
+    this.innerY = this.y+this.innerH/2;
+    //display method
+    this.display = function(){
+      //lets draw something
+    this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+    context.fillStyle = this.col;
+    context.fillRect(this.x,this.y,this.w,this.h);
+    context.clearRect(this.innerX,this.innerY,this.innerW,this.innerH);
+
+    }
+  }
+}
+  </script>
+</head>
+<body>
+  <canvas id = "testCanvas" width = 500 height =500></canvas>
+</body>
+</html>

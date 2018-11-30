@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Examples </title>
+  <style>
+  body{
+    margin:0;
+    padding:0;
+  }
+  canvas{
+    background:black;
+}
+  </style>
+
+  <script>
+  window.onload = function(){
+
+
+// get the canvas
+let canvas = document.getElementById("testCanvas");
+
+//get the context
+let context = canvas.getContext("2d");
+
+// variables regarding the circle that the circleObject will move around
+let cntrRadius = 100;
+let cntrX =canvas.width/2;
+let cntrY = canvas.height/2;
+
+//declare an array of shapes
+let circShapeList = [];
+//declare the number of shapes we want
+const NUM_CIRC_SHAPES=12;
+
+let stepSize = Math.PI*2/NUM_CIRC_SHAPES;
+//fill the array with shapes
+for(let i=0; i< NUM_CIRC_SHAPES;i++){
+  let r = (Math.floor((Math.random() * 255) + 1));
+  let g = (Math.floor((Math.random() * 255) + 1));
+  let b = (Math.floor((Math.random() * 255) + 1));
+  circShapeList.push(new CustomCircShape(100,100,10,255,125,0,1.0,0.02,i*stepSize));
+}
+
+requestAnimationFrame(run);
+
+//our run method
+function run(){
+
+  context.clearRect(0,0,canvas.width,canvas.height);
+  for(let i=0; i< NUM_CIRC_SHAPES;i++){
+
+    circShapeList[i].display();
+    circShapeList[i].update();
+  }
+
+  //recursive call
+  requestAnimationFrame(run);
+
+}
+
+//custom circle.
+function CustomCircShape(x,y,r,redC,greenC,blueC,alphaC,angSpeed,theta){
+  //member props
+  this.x =x;
+  this.y =y;
+  this.r =r;
+  this.redC = redC;
+  this.greenC = greenC;
+  this.blueC = blueC;
+  this.alphaC = alphaC;
+  this.angularSpeed = angSpeed;
+  //pass initial theta as a parameter
+  this.theta =theta;
+
+
+  //display
+  this.display = function(){
+  this.col = "rgba("+this.redC+","+this.greenC+","+this.blueC+","+this.alphaC+")";
+  this.strokeCol = "rgba("+255+","+255+","+255+","+(0.65)+")";
+
+
+  context.beginPath();
+  context.fillStyle = this.col;
+  context.strokeStyle = this.strokeCol;
+  context.lineWidth = 2;
+  context.arc(this.x,this.y,this.r,0,2*Math.PI,true);
+  //ALWAYS put fill()
+  //after the shape...
+  context.fill();
+  context.stroke();
+  context.closePath();
+}
+this.update =function(){
+  this.x = Math.cos(this.theta)*cntrRadius + cntrX;
+  this.y = Math.sin(this.theta)*cntrRadius + cntrY;
+  this.theta+=this.angularSpeed;
+}
+
+
+}
+
+}
+  </script>
+</head>
+<body>
+  <canvas id = "testCanvas" width = 500 height =500></canvas>
+</body>
+</html>

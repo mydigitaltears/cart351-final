@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Examples </title>
+  <style>
+  body{
+    margin:0;
+    padding:0;
+  }
+  canvas{
+    background:black;
+}
+  </style>
+
+  <script>
+  window.onload = function(){
+
+
+// get the canvas
+let canvas = document.getElementById("testCanvas");
+
+//get the context
+let context = canvas.getContext("2d");
+
+//declare an array of shapes
+let shapeList = [];
+//declare the number of shapes we want
+const NUM_SHAPES=25;
+//fill the array with shapes
+for(let i=0; i< NUM_SHAPES;i++){
+  let r = (Math.floor((Math.random() * 255) + 1));
+  let g = (Math.floor((Math.random() * 255) + 1));
+  let b = (Math.floor((Math.random() * 255) + 1));
+  shapeList.push(new CustomShape(i,i,50,50,r,g,b,1.0,(i%5)+1,(i%6)+2));
+}
+
+requestAnimationFrame(run);
+
+//our run method
+function run(){
+
+  context.clearRect(0,0,canvas.width,canvas.height);
+  for(let i=0; i< NUM_SHAPES;i++){
+
+    shapeList[i].display();
+    shapeList[i].update();
+  }
+
+  //recursive call
+  requestAnimationFrame(run);
+
+}
+
+  function CustomShape(x,y,w,h,r,g,b,a,speedX,speedY){
+    //member properties
+    this.x =x;
+    this.y =y;
+    this.w = w;
+    this.h=h;
+    this.r =r;
+    this.g =g;
+    this.b=b;
+    this.a=a;
+    this.innerW = this.w/2;
+    this.innerH = this.h/2;
+    //add in when we update
+    this.speedX = speedX;
+    this.speedY = speedY;
+    //this.innerX = this.x+this.innerW/2;
+    //this.innerY = this.y+this.innerH/2;
+    //display method
+    this.display = function(){
+      //lets draw something
+    this.col = "rgba("+this.r+","+this.g+","+this.b+","+this.a+")";
+    context.fillStyle = this.col;
+    context.fillRect(this.x,this.y,this.w,this.h);
+    context.clearRect(this.innerX,this.innerY,this.innerW,this.innerH);
+
+    }
+    //update
+    this.update = function(){
+
+      //edges bouncing specifically for a rect with corner coords.
+      if(this.x>(canvas.width-this.w)||this.x<0){
+        this.speedX*=-1;
+      }
+      if(this.y>(canvas.height-this.h)||this.y<0){
+        this.speedY*=-1;
+      }
+
+      //change by speed ...
+      this.x+=this.speedX;
+      this.y+=this.speedY;
+      //need to update the inner vars here ....
+      this.innerX = this.x+this.innerW/2;
+      this.innerY = this.y+this.innerH/2;
+    }
+  }
+
+}
+  </script>
+</head>
+<body>
+  <canvas id = "testCanvas" width = 500 height =500></canvas>
+</body>
+</html>

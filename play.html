@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  <script src="js/canvas2image.js"></script>
+  <script src="js/libraries/p5.js"></script>
+  <script src="js/libraries/p5.sound.js"></script>
+  <script src="js/libraries/p5.play.js"></script>
+  <script src="js/libraries/p5.dom.js"></script>
+  <script src="js/script.js"></script>
+    <style>
+      body {
+        background-color:rgb(255);
+        font-family: 'Niramit', sans-serif;
+        text-align: center;
+        color: rgb(49, 50, 64);
+        text-decoration: initial;
+        margin:auto;
+      }
+      #items{
+        font-family: 'Gloria Hallelujah', cursive;
+        position:absolute;
+        padding-bottom: 0px;
+        right:0%;
+        text-align: center;
+        background-color:rgb(255);
+      }
+      .button_style{
+        border-radius: 60px;
+        font-family: 'Gloria Hallelujah', cursive;
+        width: 240px;
+        height: 50px;
+        font-size: 24px;
+        background-color:rgb(220, 220, 220);
+        text-decoration:none;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="bricks">
+
+    	<div class="row masonry">
+
+    		<!-- brick-wrapper -->
+          <div class="bricks-wrapper">
+
+          	<div class="grid-sizer"></div>
+          </div> <!-- end brick-wrapper -->
+
+     </div> <!-- end row -->
+
+
+
+		<!--<canvas id="canvas" width="640" height="480" style="border:1px solid #000000;"></canvas>-->
+    <script>
+      window.onload = function(){
+        document.getElementById("butt1").addEventListener("mouseover", opa_in_butt1)
+        document.getElementById("butt1").addEventListener("mouseout", opa_out_butt1)
+
+        function opa_in_butt1(event)
+        {
+            document.getElementById("butt1").style.background="rgb(150, 150, 150)";
+        }
+        function opa_out_butt1(event)
+        {
+            document.getElementById("butt1").style.background="rgb(220, 220, 220)";
+        }
+      }
+
+    </script>
+    <div id="items">
+      <!--<button onclick="saveC()" id="butt1" class="button_style">Draw to Image</button> -->
+    </div>
+  </body>
+</html>

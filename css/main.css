@@ -1,0 +1,99 @@
+html {
+
+}
+
+head {
+}
+
+body {
+	margin: 0;
+	font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
+.articleS {
+	position:static;
+	width:50%;
+	float: left;
+}
+
+.entry-header {
+	text-align: center;
+	color: #898989;
+}
+
+img {
+	width:100%;
+	height:100%;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.sticky + .content {
+  padding-top: 102px;
+}
+
+#main-head {
+	width: 100%;
+	display: inline-block;
+	background-color: black;
+	margin: 0px;
+}
+
+#main-nav-wrap {
+	display: table;
+	float: right;
+	font-size: 30px;
+	height: 78px;
+}
+
+#main-title{
+	display: table;
+	float: left;
+	font-size: 30px;
+	height: 78px;
+}
+.head-title {
+	display: table-cell;
+	vertical-align: middle;
+	list-style: none;
+}
+
+.head-title li {
+	position: relative;
+	display: inline-block;
+	float: left;
+	margin-right: 22px;
+	padding: 0;
+}
+
+.head-title li a {
+	display: block;
+	color: #FFFFFF;
+	border: none;
+	text-decoration:none;
+}
+
+.main-navigation {
+	display: table-cell;
+	vertical-align: middle;
+	list-style: none;
+}
+
+.main-navigation li {
+	position: relative;
+	display: inline-block;
+	float: left;
+	margin-right: 22px;
+	padding: 0;
+}
+
+.main-navigation li a {
+	display: block;
+	color: #FFFFFF;
+	border: none;
+	text-decoration:none;
+}

@@ -49,8 +49,8 @@ function draw() {
 }
 
 function saveC() {
-  //saveCanvas(c, 'myCanvas', 'png');
-  createImage(width, height);
+  saveCanvas(c, 'myCanvas4', 'png');
+  //createImage(width, height);
 }
 
 function showIntro(){

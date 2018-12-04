@@ -4,7 +4,7 @@ class MyDB extends SQLite3
 {
    function __construct()
    {
-      $this->open('"/db/graffitiGallery.db');
+      $this->open('"/db/imageGallery.db');
    }
 }
 try
@@ -24,7 +24,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
  $artist = $_POST['a_name'];
  $title = $_POST['a_title'];
  $loc = $_POST['a_geo_loc'];
- $description = $_POST['a_descript'];
  $creationDate = $_POST['a_date'];
  if($_FILES)
   {
@@ -43,13 +42,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 	$artist_es =$db->escapeString($artist);
 	$title_es = $db->escapeString($title);
 	$loc_es =$db->escapeString($loc);
-	$description_es =$db->escapeString($description);
 	$creationDate_es =$db->escapeString($creationDate);
 	// the file name with correct path
 	$imageWithPath= "images/".$fname;
   // for the new column
   $time = date("Y-m-d",time());
-  $queryInsert ="INSERT INTO artCollection(artist, title, creationDate, geoLoc, descript, image)VALUES ('$artist_es', '$title_es','$loc_es','$description_es','$creationDate_es','$imageWithPath')";
+  $queryInsert ="INSERT INTO artCollection(artist, title, creationDate, geoLoc, image)VALUES ('$artist_es', '$title_es','$loc_es','$creationDate_es','$imageWithPath')";
   // again we do error checking when we try to execute our SQL statement on the db
 	$ok1 = $db->exec($queryInsert);
   // NOTE:: error messages WILL be sent back to JQUERY success function .....
@@ -80,7 +78,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <head>
 <title>Sample Insert into Gallery Form USING JQUERY AND AJAX </title>
 <!-- get JQUERY -->
-  <script src = "libs/jquery-3.3.1.min.js"></script>
+  <script src = "js/libraries/jquery-3.3.1.min.js"></script>
 <!--set some style properties::: -->
 <link rel="stylesheet" type="text/css" href="css/galleryStyle.css">
 </head>
@@ -98,7 +96,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 <p><label>Title:</label><input type = "text" size="24" maxlength = "40"  name = "a_title" required></p>
 <p><label>Geographic Location:</label><input type = "text" size="24" maxlength = "40" name = "a_geo_loc" required></p>
 <p><label>Creation Date (DD-MM-YYYY):</label><input type="date" name="a_date" required></p>
-<p><label>Description:</label><textarea type = "text" rows="4" cols="50" name = "a_descript" required></textarea></p>
 <p><label>Upload Image:</label> <input type ="file" name = 'filename' size=10 required/></p>
 <p class = "sub"><input type = "submit" name = "submit" value = "submit my info" id ="buttonS" /></p>
  </fieldset>
@@ -135,30 +132,30 @@ $(document).ready (function(){
       });
    });
    // validate and process form here
-    function displayResponse(theResult){
-      let container = $('<div>').addClass("outer");
-      let title = $('<h3>');
-      $(title).text("Results from user");
-      $(title).appendTo(container);
-      let contentContainer = $('<div>').addClass("content");
-      for (let property in theResult) {
-        console.log(property);
-        if(property ==="fileName"){
-          let img = $("<img>");
-          $(img).attr('src','images/'+theResult[property]);
-
-          $(img).appendTo(contentContainer);
-        }
-        else{
-          let para = $('<p>');
-          $(para).text(property+"::" +theResult[property]);
-            $(para).appendTo(contentContainer);
-        }
-
-      }
-      $(contentContainer).appendTo(container);
-      $(container).appendTo("#result");
-    }
+    // function displayResponse(theResult){
+    //   let container = $('<div>').addClass("outer");
+    //   let title = $('<h3>');
+    //   $(title).text("Results from user");
+    //   $(title).appendTo(container);
+    //   let contentContainer = $('<div>').addClass("content");
+    //   for (let property in theResult) {
+    //     console.log(property);
+    //     if(property ==="fileName"){
+    //       let img = $("<img>");
+    //       $(img).attr('src','images/'+theResult[property]);
+    //
+    //       $(img).appendTo(contentContainer);
+    //     }
+    //     else{
+    //       let para = $('<p>');
+    //       $(para).text(property+"::" +theResult[property]);
+    //         $(para).appendTo(contentContainer);
+    //     }
+    //
+    //   }
+    //   $(contentContainer).appendTo(container);
+    //   $(container).appendTo("#result");
+    // }
 
 });
 </script>

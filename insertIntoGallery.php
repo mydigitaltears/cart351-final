@@ -27,10 +27,10 @@ try
     }
 
     $queryArray = array(
-      "INSERT INTO artCollection (artist, title, creationDate, geoLoc, image) VALUES ('Xavier', 'A Monkey','2018-12-04','Montreal','images/myCanvas.png')",
- 	    "INSERT INTO artCollection (artist, title, creationDate, geoLoc, image) VALUES ('Xavier', 'A Fish','2018-12-04','Montreal','images/myCanvas2.png')",
- 	    "INSERT INTO artCollection (artist, title, creationDate, geoLoc, image) VALUES ('Xavier', 'An Elephant', '2018-12-04','Montreal','images/myCanvas3.png')",
-  	  "INSERT INTO artCollection (artist, title, creationDate, geoLoc, image) VALUES ('Xavier', 'A Spider','2018-12-04','Montreal','images/myCanvas4.png')",
+      "INSERT INTO artCollection (title, artist, creationDate, geoLoc, image) VALUES ('A Monkey', 'Xavier','2018-12-04','Montreal','images/myCanvas.png')",
+ 	    "INSERT INTO artCollection (title, artist, creationDate, geoLoc, image) VALUES ('A Fish', 'Xavier','2018-12-04','Montreal','images/myCanvas2.png')",
+ 	    "INSERT INTO artCollection (title, artist, creationDate, geoLoc, image) VALUES ('An Elephant', 'Xavier', '2018-12-04','Montreal','images/myCanvas3.png')",
+  	  "INSERT INTO artCollection (title, artist, creationDate, geoLoc, image) VALUES ('A Spider', 'Xavier','2018-12-04','Montreal','images/myCanvas4.png')",
   	 );
      // go through each entry in the array and execute the INSERT query statement....
      for($i =0; $i< count($queryArray); $i++)

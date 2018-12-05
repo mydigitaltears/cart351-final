@@ -91,7 +91,7 @@
           }
          }//end while
        }
-       move_uploaded_file($_FILES['filename']['tmp_name'], "images/".$nameID);
+       move_uploaded_file($_FILES['filename']['tmp_name'], "images/".$nameID.".png");
         //package the data and echo back...
         // NEW:: add into our db ....
        //The data from the text box is potentially unsafe; 'tainted'.
@@ -105,7 +105,7 @@
       $subject_es =$db->escapeString($subject);
       $newsuject_es =$db->escapeString($newSub);
     	// the file name with correct path
-    	$imageWithPath= "images/".$nameID;
+    	$imageWithPath= "images/".$nameID.".png";
       // for the new column
       $time = date("F jS Y",time());
       $creationDate_es = $time;
@@ -142,6 +142,7 @@
     <style>
       body {
         font-family: "Comic Sans MS", "Comic Sans", cursive;
+        overflow: hidden;
       }
       #onloadText {
         text-align: center;
@@ -164,6 +165,27 @@
       #insertSubject {
         display: none;
         position: relative;
+      }
+      #goback {
+        width:100%;
+        text-align: center;
+        float:left;
+        display: none;
+        position: relative;
+      }
+      .button {
+        background-color: black;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 30px;
+      }
+      .button:hover {
+        background-color: lightblue;
+        color: black;
       }
     </style>
   </head>
@@ -189,6 +211,9 @@
          </fieldset>
         </form>
       </div>
+      <div id="goback">
+         <button class ="button" onclick="goBack()">Go back!</button>
+      </div>
       <canvas id="canvas" width="800" height="600" style="position:absolute;top:0%;left:0%;"></canvas>
     <script>
       var canvas = document.getElementById('canvas');
@@ -209,6 +234,10 @@
         };
       })();
 
+      function goBack() {
+        window.location.href = 'Main_Page.php';
+      }
+
       function drawing () {
             let ended = false;
             document.getElementById('onloadText').style.display = "none";
@@ -219,10 +248,14 @@
             let timerId = setInterval(function(){ timer--; document.getElementById("demo").innerHTML = timer; console.log(timer);}, 1000);
             setTimeout(() => { clearInterval(timerId); document.getElementById("demo").innerHTML = ""; saveImage();stop(); ended = true; console.log(ended);}, 30000);
 
+
             function stop() {
               canvas.removeEventListener('mousedown', engage);
               canvas.removeEventListener('mousemove',putPoint);
               canvas.removeEventListener('mouseup', disengage);
+	            canvas.removeEventListener('touchstart', engageTouch);
+              canvas.removeEventListener('touchmove',putPointTouch);
+              canvas.removeEventListener('touchend', disengageTouch);
               document.getElementById('canvas').style.position = "relative";
             }
 
@@ -243,20 +276,86 @@
               }
             }
 
+	           var putPointTouch = function(e){
+		              e.preventDefault();
+              putPoint(e);
+            }
+
             var engage = function(e){
               dragging = true;
               putPoint(e);
             }
+
+	           var engageTouch = function(e){
+                 engage(e);
+            }
+
+
 
             var disengage = function(){
               dragging = false;
               context.beginPath();
             }
 
+	           var disengageTouch = function(e){
+		              e.preventDefault();
+              disengage(e);
+            }
+
+            canvas.addEventListener('touchstart', engageTouch);
+            canvas.addEventListener('touchmove',putPointTouch);
+            canvas.addEventListener('touchend', disengageTouch);
             canvas.addEventListener('mousedown', engage);
             canvas.addEventListener('mousemove',putPoint);
             canvas.addEventListener('mouseup', disengage);
 
+            //
+            // function stop() {
+            //   canvas.removeEventListener('mousedown', engage);
+            //   canvas.removeEventListener('mousemove',putPoint);
+            //   canvas.removeEventListener('mouseup', disengage);
+            //   document.getElementById('canvas').style.position = "relative";
+            // }
+            //
+            // canvas.width = window.innerWidth;
+            // canvas.height = window.innerHeight;
+            // context.lineWidth = radius*2;
+            //
+            // var putPoint = function(e){
+            //   if(dragging){
+            //     context.lineTo(e.offsetX, e.offsetY);
+            //     context.stroke();
+            //     context.beginPath();
+            //     //context.arc(e.clientX, e.clientY, radius, 0, Math.PI*2);
+            //     context.arc(e.offsetX, e.offsetY, radius, 0, Math.PI*2);
+            //     context.fill();
+            //     context.beginPath();
+            //     context.moveTo(e.offsetX, e.offsetY);
+            //   }
+            // }
+            //
+            // var engage = function(e){
+            //   dragging = true;
+            //   putPoint(e);
+            // }
+            //
+            // var disengage = function(){
+            //   dragging = false;
+            //   context.beginPath();
+            // }
+            //
+            // function engageTouch(e) {
+            //     if (e.target == canvas) {
+            //        e.preventDefault();
+            //     }
+            //     engage(e);
+            // }
+            // canvas.addEventListener('touchstart', engage);
+            // canvas.addEventListener('touchmove',putPoint);
+            // canvas.addEventListener('touchend', disengage);
+            // canvas.addEventListener('mousedown', engage);
+            // canvas.addEventListener('mousemove',putPoint);
+            // canvas.addEventListener('mouseup', disengage);
 
         } // end of drawing
 
@@ -305,8 +404,8 @@
                     console.log("error occurred");
                   }
                 });
-                window.location.href = 'Main_Page.php';
-
+                document.getElementById('formContainer').style.display = "none";
+                document.getElementById('goback').style.display = "inline";
              });
              // validate and process form here
           });

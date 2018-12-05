@@ -74,7 +74,7 @@
           // access by key
           echo "<div class ='aImage'>";
             $imagePath = $row["image"];
-            echo "<img src = $imagePath\>";
+            echo "<img src = $imagePath>";
           echo "</div>";
           echo "</div>";
         }//end while

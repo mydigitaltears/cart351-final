@@ -57,14 +57,14 @@
             if($key!="image" && $key!="pieceID")
             {
               if($key=="title"){
-                echo "<p>".$entry."</p>";
+                echo "<p><span>".$entry."</span></p>";
               }
               else if($key=="artist"){
-                echo "<p>By : ".$entry."</p>";
+                echo "<p><span>By : ".$entry."</span></p>";
               }
               else {
                 // echo the key and entry
-                echo "<p>".$entry."</p>";
+                echo "<p><span>".$entry."</span></p>";
               }
             }
          }

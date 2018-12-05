@@ -1,0 +1,55 @@
+<?php
+
+    if(!isset($_POST["code"])){
+        die("Post was empty.");
+    }
+
+    $sql="insert into designs(image) values(:image)";
+
+    // INSERT with named parameters
+    $conn = new PDO('mysql:host=localhost;dbname=myDB', "root", "myPassword");
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(":image",$_POST["image"]);
+    $stmt->execute();
+    $affected_rows = $stmt->rowCount();
+    echo $affected_rows;
+
+?>
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+  <script src="js/libraries/jquery-3.3.1.min.js"></script>
+  <script src="js/canvas2image.js"></script>
+  <script src="js/libraries/p5.js"></script>
+  <script src="js/libraries/p5.sound.js"></script>
+  <script src="js/libraries/p5.play.js"></script>
+  <script src="js/libraries/p5.dom.js"></script>
+  <script src="js/script.js"></script>
+    <style>
+      body {
+        background-color:rgb(255);
+        font-family: 'Niramit', sans-serif;
+        text-align: center;
+        color: rgb(49, 50, 64);
+        text-decoration: initial;
+        margin:auto;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      var dataUrl=c.toDataURL();
+
+      $.ajax({
+        type: "POST",
+        url: "http://localhost/saveCanvasDataUrl.php",
+        data: {image: dataUrl}
+      })
+      .done(function(respond){console.log("done: "+respond);})
+      .fail(function(respond){console.log("fail");})
+      .always(function(respond){console.log("always");})
+
+    </script>
+  </body>
+</html>

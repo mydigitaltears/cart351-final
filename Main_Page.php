@@ -56,7 +56,7 @@
            //if the column name is not 'image'
             if($key!="image" && $key!="pieceID")
             {
-              if($key=="title"){
+              if($key=="subject"){
                 echo "<p><span>".$entry."</span></p>";
               }
               else if($key=="artist"){

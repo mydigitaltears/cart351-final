@@ -9,6 +9,40 @@
     try
     {
        $db = new MyDB();
+       $sql_select2='SELECT * FROM subjects ORDER BY RANDOM() LIMIT 1';
+       $result2 = $db->query($sql_select2);
+       if (!$result2) die("Cannot execute query.");
+       // fetch first row ONLY...
+       $row2 = $result2->fetchArray(SQLITE3_ASSOC);
+       $result2->reset();
+       $countRowsStatement2= "SELECT COUNT (*) FROM subjects";
+       $countRows2 = $db->query($countRowsStatement2);
+       $countResult2 = $countRows2->fetchArray(SQLITE3_NUM);
+       //echo $countResult[0]."<br \>";
+       if($countResult2[0] == 0)
+        {
+         echo"<div id='onloadText'>";
+           echo"<h1>Draw a monkey, you have 30 seconds</h1>";
+          echo" <h1>Click to start!</h1>";
+         echo" </div>";
+         $newSu = "a monkey";
+        }
+
+       while($row2 = $result2->fetchArray(SQLITE3_ASSOC))
+       {
+        foreach ($row2 as $key2=>$entry2)
+        {
+           if($key2 == "subject")
+           {
+             $newSu = $entry2;
+             echo"<div id='onloadText'>";
+               echo"<h1>Draw a ".$newSu.", you have 30 seconds</h1>";
+              echo" <h1>Click to start!</h1>";
+             echo" </div>";
+
+           }
+        }
+       }//end while
     }
     catch(Exception $e)
     {
@@ -20,9 +54,11 @@
     {
     // need to process
      $artist = $_POST['a_name'];
-     $title = $_POST['a_title'];
+     //$title = $_POST['a_title'];
      $loc = $_POST['a_geo_loc'];
-     $creationDate = $_POST['a_date'];
+     //$creationDate = $_POST['a_date'];
+     $subject = $_POST['a_subject'];
+     $newSub = $_POST['a_new_subject'];
 
      if($_FILES)
       {
@@ -43,8 +79,8 @@
 
          while($row = $result->fetchArray(SQLITE3_ASSOC))
          {
-          echo "<div class ='articleS'>";
-          echo "<div class ='entry-header'>";
+          // echo "<div class ='articleS'>";
+          // echo "<div class ='entry-header'>";
           // go through each column in this row
           // retrieve key entry pairs
           foreach ($row as $key=>$entry)
@@ -55,33 +91,43 @@
           }
          }//end while
        }
-
        move_uploaded_file($_FILES['filename']['tmp_name'], "images/".$nameID);
         //package the data and echo back...
-
         // NEW:: add into our db ....
        //The data from the text box is potentially unsafe; 'tainted'.
     	 //We use the sqlite_escape_string.
     	 //It escapes a string for use as a query parameter.
     	//This is common practice to avoid malicious sql injection attacks.
     	$artist_es =$db->escapeString($artist);
-    	$title_es = $db->escapeString($title);
+    	//$title_es = $db->escapeString($title);
     	$loc_es =$db->escapeString($loc);
-    	$creationDate_es =$db->escapeString($creationDate);
+    	//$creationDate_es =$db->escapeString($creationDate);
+      $subject_es =$db->escapeString($subject);
+      $newsuject_es =$db->escapeString($newSub);
     	// the file name with correct path
     	$imageWithPath= "images/".$nameID;
       // for the new column
-      $time = date("Y-m-d",time());
-      $queryInsert ="INSERT INTO artCollection(artist, title, geoLoc, creationDate, image)VALUES ('$artist_es', '$title_es','$creationDate_es','$loc_es','$imageWithPath')";
+      $time = date("F jS Y",time());
+      $creationDate_es = $time;
+
+      $queryInsert ="INSERT INTO artCollection(artist, subject, geoLoc, creationDate, image)VALUES ('$artist_es', '$newsuject_es','$loc_es','$creationDate_es','$imageWithPath')";
+      $queryInsert2 ="INSERT INTO subjects(subject) VALUES('$subject_es')";
       //$queryInsert ="INSERT INTO artCollection(image)VALUES ('$image_es')";
       // again we do error checking when we try to execute our SQL statement on the db
     	$ok1 = $db->exec($queryInsert);
+      $ok2 = $db->exec($queryInsert2);
+
       // NOTE:: error messages WILL be sent back to JQUERY success function .....
     	if (!$ok1) {
         die("Cannot execute statement.");
         exit;
         }
+        if (!$ok2) {
+          die("Cannot execute statement.");
+          exit;
+          }
         //send back success...
+        echo $newSu;
         echo "success";
         exit;
       }//FILES
@@ -99,7 +145,7 @@
       }
       #onloadText {
         text-align: center;
-        top:50%;
+        top:10%;
         bottom:50%;
         position: relative;
         padding:15%;
@@ -115,13 +161,17 @@
         display: none;
         position: relative;
       }
+      #insertSubject {
+        display: none;
+        position: relative;
+      }
     </style>
   </head>
     <body>
-      <div id="onloadText">
+      <!--<div id="onloadText">
         <h1>Draw a monkey, you have 30 seconds</h1>
         <h1>Click to start!</h1>
-      </div>
+      </div>-->
       <p id="demo"></p>
       <div id= "formContainer">
         <!--form done using more current tags... -->
@@ -130,9 +180,10 @@
         <h3> SUBMIT AN ART WORK :</h3>
         <fieldset>
         <p><label>Artist:</label><input type="text" size="24" maxlength = "40" name = "a_name" required></p>
-        <p><label>Title:</label><input type = "text" size="24" maxlength = "40"  name = "a_title" required></p>
+        <!--<p><label>Title:</label><input type = "text" size="24" maxlength = "40"  name = "a_title" required></p>-->
         <p><label>Geographic Location:</label><input type = "text" size="24" maxlength = "40" name = "a_geo_loc" required></p>
-        <p><label>Creation Date (DD-MM-YYYY):</label><input type="date" name="a_date" required></p>
+        <!--<p><label>Creation Date (DD-MM-YYYY):</label><input type="date" name="a_date" required></p>-->
+        <p><label>Submit a new subject:</label><input type="text" size="24" maxlength = "40" name = "a_subject" required></p>
         <!--<p><label>Upload Image:</label> <input type ="file" name = 'filename' size=10 ></p>-->
         <p class = "sub"><input type = "submit" name = "submit" value = "submit my info" id ="buttonS" /></p>
          </fieldset>
@@ -142,7 +193,9 @@
     <script>
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
+      var newSub = "<?php echo $newSu ?>";
 
+      console.log(newSub);
       var start = (function(e){
         let gamestart = false;
         console.log("click");
@@ -228,6 +281,7 @@
                console.log("button clicked");
                let form = $('#insertGallery')[0];
                let data = new FormData(form);
+               data.append("a_new_subject",newSub);
                data.append("filename",blob);
 
                $.ajax({
@@ -251,8 +305,8 @@
                     console.log("error occurred");
                   }
                 });
-
                 window.location.href = 'Main_Page.php';
+
              });
              // validate and process form here
           });

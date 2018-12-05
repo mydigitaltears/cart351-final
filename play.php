@@ -37,6 +37,15 @@
      $title = $_POST['a_title'];
      $loc = $_POST['a_geo_loc'];
      $creationDate = $_POST['a_date'];
+
+     // $img = $_POST['img'];
+     // $img = str_replace('data:image/png;base64,', '', $img);
+     // $img = str_replace(' ', '+', $img);
+     // $fileData = base64_decode($img);
+     // //saving
+     // $fileName = 'photo.png';
+     // file_put_contents($fileName, $fileData);
+
      //$image = $_POST['an_image'];
      if($_FILES)
       {
@@ -45,8 +54,36 @@
        //$fname = $_FILES['filename']['name'];
        //move_uploaded_file($_FILES['filename']['tmp_name'], "images/".$fname);
        $fname = $_FILES['filename']['name'];
-       move_uploaded_file($_FILES['filename']['tmp_name'], "images/".$fname);
-        //echo "done";
+
+       $countRowsStatement= "SELECT COUNT (*) FROM artCollection";
+       $countRows = $db->query($countRowsStatement);
+       $countResult = $countRows->fetchArray(SQLITE3_NUM);
+       echo $countResult[0]."<br \>";
+       if($countResult[0] == 0)
+        {
+         $nameID = 1;
+         echo " we have an empty database:: <br \>";
+        }
+       else{
+         $id = 'SELECT * FROM artCollection';
+         $result = $db->query($id);
+
+         while($row = $result->fetchArray(SQLITE3_ASSOC))
+         {
+          echo "<div class ='articleS'>";
+          echo "<div class ='entry-header'>";
+          // go through each column in this row
+          // retrieve key entry pairs
+          foreach ($row as $key=>$entry)
+          {
+            if($key=="pieceID"){
+              $nameID = $entry+1;
+            }
+          }
+         }//end while
+       }
+
+       move_uploaded_file($_FILES['filename']['tmp_name'], "images/".$nameID);
         //package the data and echo back...
 
         // NEW:: add into our db ....
@@ -59,7 +96,7 @@
     	$loc_es =$db->escapeString($loc);
     	$creationDate_es =$db->escapeString($creationDate);
     	// the file name with correct path
-    	$imageWithPath= "images/".$fname;
+    	$imageWithPath= "images/".$nameID;
       // for the new column
       $time = date("Y-m-d",time());
       $queryInsert ="INSERT INTO artCollection(artist, title, geoLoc, creationDate, image)VALUES ('$artist_es', '$title_es','$creationDate_es','$loc_es','$imageWithPath')";
@@ -122,7 +159,7 @@
         <p><label>Title:</label><input type = "text" size="24" maxlength = "40"  name = "a_title" required></p>
         <p><label>Geographic Location:</label><input type = "text" size="24" maxlength = "40" name = "a_geo_loc" required></p>
         <p><label>Creation Date (DD-MM-YYYY):</label><input type="date" name="a_date" required></p>
-        <p><label>Upload Image:</label> <input type ="file" name = 'filename' size=10 ></p>
+        <!--<p><label>Upload Image:</label> <input type ="file" name = 'filename' size=10 ></p>-->
         <p class = "sub"><input type = "submit" name = "submit" value = "submit my info" id ="buttonS" /></p>
          </fieldset>
         </form>
@@ -163,7 +200,7 @@
             let timer = 30;
             document.getElementById("demo").innerHTML = timer;
             let timerId = setInterval(function(){ timer--; document.getElementById("demo").innerHTML = timer; console.log(timer);}, 1000);
-            setTimeout(() => { clearInterval(timerId); document.getElementById("demo").innerHTML = ""; saveImage();stop(); ended = true; console.log(ended);}, 5000);
+            setTimeout(() => { clearInterval(timerId); document.getElementById("demo").innerHTML = ""; saveImage();stop(); ended = true; console.log(ended);}, 30000);
 
             function stop() {
               canvas.removeEventListener('mousedown', engage);
@@ -221,16 +258,19 @@
              document.body.appendChild(a);
              // a.click();
              document.body.removeChild(a);
-          });
+
           //var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
           // window.location.href=image; // it will save locally
           $(document).ready (function(){
+              var pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // PNG is the default
+              //window.location.href=pngUrl; // it will save locally
               $("#insertGallery").submit(function(event) {
                //stop submit the form, we will post it manually. PREVENT THE DEFAULT behaviour ...
                event.preventDefault();
                console.log("button clicked");
                let form = $('#insertGallery')[0];
                let data = new FormData(form);
+               data.append("filename",blob);
 
                $.ajax({
                       type: "POST",
@@ -256,6 +296,8 @@
              });
              // validate and process form here
           });
+
+        });//blob
         } // end of saveImage()
 
         canvas.addEventListener('click', start);

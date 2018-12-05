@@ -293,6 +293,8 @@
                     console.log("error occurred");
                   }
                 });
+
+                window.location.href = 'viewResults.php';
              });
              // validate and process form here
           });

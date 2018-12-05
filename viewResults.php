@@ -32,13 +32,13 @@
          echo"<nav id='main-head'>";
            echo"<nav id='main-title'>";
              echo"<ul class='head-title'>";
-               echo"<li class='the-title'> <a href='test.html' title=''>Drawnimo</a> </li>";
+               echo"<li class='the-title'> <a href='viewResults.php' title=''>Drawnimo</a> </li>";
              echo"</ul>";
            echo"</nav>";
            echo"<nav id='main-nav-wrap'>";
              echo"<ul class='main-navigation sf-menu'>";
-               echo"<li class='current'><a href='test.html' title=''>Home</a></li>";
-               echo"<li class='has-children'><a href='play.html' title=''>Play</a></li>";
+               echo"<li class='current'><a href='viewResults.php' title=''>Home</a></li>";
+               echo"<li class='has-children'><a href='play.php' title=''>Play</a></li>";
              echo"</ul>";
            echo"</nav> <!-- end main-nav-wrap -->";
          echo"</nav>";

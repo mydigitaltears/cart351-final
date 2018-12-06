@@ -15,14 +15,14 @@ span {
 }
 
 p {
-	font-size: 20px;
+	font-size: 15px;
 	margin:10;
 	font-weight: 600;
 }
 
 .articleS {
 	position:relative;
-	width:50%;
+	width:25%;
 	float: left;
 }
 
@@ -30,7 +30,7 @@ p {
 	float: left;
 	width: 90%;
 	height: 90%;
-	margin-top: 10%;
+	margin-top: 5%;
 	z-index: 1000;
 	text-align: center;
 	color: white;

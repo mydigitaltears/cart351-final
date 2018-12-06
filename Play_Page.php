@@ -7,8 +7,9 @@
        }
     }
     try
-    {
+    {  // First I load the db
        $db = new MyDB();
+       // After loading the db I search for a random subject and load it
        $sql_select2='SELECT * FROM subjects ORDER BY RANDOM() LIMIT 1';
        $result2 = $db->query($sql_select2);
        if (!$result2) die("Cannot execute query.");
@@ -19,6 +20,7 @@
        $countRows2 = $db->query($countRowsStatement2);
        $countResult2 = $countRows2->fetchArray(SQLITE3_NUM);
        //echo $countResult[0]."<br \>";
+       //The first subject would be "a monkey" if no subject is submitted yet
        if($countResult2[0] == 0)
         {
          echo"<div id='onloadText'>";
@@ -27,7 +29,8 @@
          echo" </div>";
          $newSu = "a monkey";
         }
-
+       // load a random subject and put it in the user prompt
+       // I use the var $newSu to store the value of that new subject
        while($row2 = $result2->fetchArray(SQLITE3_ASSOC))
        {
         foreach ($row2 as $key2=>$entry2)
@@ -54,16 +57,19 @@
     {
     // need to process
      $artist = $_POST['a_name'];
-     //$title = $_POST['a_title'];
      $loc = $_POST['a_geo_loc'];
-     //$creationDate = $_POST['a_date'];
+     // this can be confusing, the $subject is actually the subject submitted
+     // via the final form, now the new subject loaded earier
      $subject = $_POST['a_subject'];
+     // this is the new subject loaded earlier
      $newSub = $_POST['a_new_subject'];
 
      if($_FILES)
       {
+       // load the picture file
        $fname = $_FILES['filename']['name'];
 
+       // following the template from class
        $countRowsStatement= "SELECT COUNT (*) FROM artCollection";
        $countRows = $db->query($countRowsStatement);
        $countResult = $countRows->fetchArray(SQLITE3_NUM);
@@ -91,6 +97,7 @@
           }
          }//end while
        }
+       // I had to add .png at the end of the file so the picture could display on the Condordia website
        move_uploaded_file($_FILES['filename']['tmp_name'], "images/".$nameID.".png");
         //package the data and echo back...
         // NEW:: add into our db ....
@@ -99,17 +106,20 @@
     	 //It escapes a string for use as a query parameter.
     	//This is common practice to avoid malicious sql injection attacks.
     	$artist_es =$db->escapeString($artist);
-    	//$title_es = $db->escapeString($title);
     	$loc_es =$db->escapeString($loc);
-    	//$creationDate_es =$db->escapeString($creationDate);
       $subject_es =$db->escapeString($subject);
       $newsuject_es =$db->escapeString($newSub);
     	// the file name with correct path
     	$imageWithPath= "images/".$nameID.".png";
       // for the new column
+      // using date function to get the actual date
       $time = date("F jS Y",time());
       $creationDate_es = $time;
 
+      // Here I use two query inserts because I'm putting the infos / the image
+      // + the new random subject in the artCollection table and the new submitted
+      // subject into a subjects table that will be used to give random subjects
+      // to the future users
       $queryInsert ="INSERT INTO artCollection(artist, subject, geoLoc, creationDate, image)VALUES ('$artist_es', '$newsuject_es','$loc_es','$creationDate_es','$imageWithPath')";
       $queryInsert2 ="INSERT INTO subjects(subject) VALUES('$subject_es')";
       //$queryInsert ="INSERT INTO artCollection(image)VALUES ('$image_es')";
@@ -218,9 +228,12 @@
     <script>
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
+      // For some reason the $newSu would change value between the first prompt and
+      // the final display so I had to import it into js and put it into the AJAX request
       var newSub = "<?php echo $newSu ?>";
 
       console.log(newSub);
+      // using a click function to start the game with a click
       var start = (function(e){
         let gamestart = false;
         console.log("click");
@@ -234,22 +247,34 @@
         };
       })();
 
+      // goBack function to go back to the main screen, I had to use this because
+      // if I changed window automatically sometimes the data wouldn't have the time
+      // export into the db
       function goBack() {
         window.location.href = 'Main_Page.php';
       }
 
+      // drawing function
       function drawing () {
             let ended = false;
+            // hide the text already on screen
             document.getElementById('onloadText').style.display = "none";
             var radius = 4;
             var dragging = false;
+            // time to draw
             let timer = 30;
+            // timer at the top left corner
             document.getElementById("demo").innerHTML = timer;
+            // setInterval to make the seconds go down and setTimeout to end the draw
             let timerId = setInterval(function(){ timer--; document.getElementById("demo").innerHTML = timer; console.log(timer);}, 1000);
             setTimeout(() => { clearInterval(timerId); document.getElementById("demo").innerHTML = ""; saveImage();stop(); ended = true; console.log(ended);}, 30000);
 
-
+            // stop function to end the draw
             function stop() {
+              // I couldn't find a way to return my draw() function so I decided to stop
+              // the mouse events so the user is unable to draw anymore
+              // Even though I putted touch events, the program doesn't
+              // work on mobile, has to do with the screen dragging or something
               canvas.removeEventListener('mousedown', engage);
               canvas.removeEventListener('mousemove',putPoint);
               canvas.removeEventListener('mouseup', disengage);
@@ -259,10 +284,12 @@
               document.getElementById('canvas').style.position = "relative";
             }
 
+            // canvas size
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             context.lineWidth = radius*2;
 
+            // drawing functions
             var putPoint = function(e){
               if(dragging){
                 context.lineTo(e.offsetX, e.offsetY);
@@ -309,62 +336,13 @@
             canvas.addEventListener('mousemove',putPoint);
             canvas.addEventListener('mouseup', disengage);
 
-            //
-            // function stop() {
-            //   canvas.removeEventListener('mousedown', engage);
-            //   canvas.removeEventListener('mousemove',putPoint);
-            //   canvas.removeEventListener('mouseup', disengage);
-            //   document.getElementById('canvas').style.position = "relative";
-            // }
-            //
-            // canvas.width = window.innerWidth;
-            // canvas.height = window.innerHeight;
-            // context.lineWidth = radius*2;
-            //
-            // var putPoint = function(e){
-            //   if(dragging){
-            //     context.lineTo(e.offsetX, e.offsetY);
-            //     context.stroke();
-            //     context.beginPath();
-            //     //context.arc(e.clientX, e.clientY, radius, 0, Math.PI*2);
-            //     context.arc(e.offsetX, e.offsetY, radius, 0, Math.PI*2);
-            //     context.fill();
-            //     context.beginPath();
-            //     context.moveTo(e.offsetX, e.offsetY);
-            //   }
-            // }
-            //
-            // var engage = function(e){
-            //   dragging = true;
-            //   putPoint(e);
-            // }
-            //
-            // var disengage = function(){
-            //   dragging = false;
-            //   context.beginPath();
-            // }
-            //
-            // function engageTouch(e) {
-            //     if (e.target == canvas) {
-            //        e.preventDefault();
-            //     }
-            //     engage(e);
-            // }
-            // canvas.addEventListener('touchstart', engage);
-            // canvas.addEventListener('touchmove',putPoint);
-            // canvas.addEventListener('touchend', disengage);
-            // canvas.addEventListener('mousedown', engage);
-            // canvas.addEventListener('mousemove',putPoint);
-            // canvas.addEventListener('mouseup', disengage);
 
         } // end of drawing
-
         let saveImage = function(ev) {
-
-
+          // display the form once the timer is over
           document.getElementById('formContainer').style.display = "inline";
 
-
+          // I had to use a blob to export my image into the database,
           $('#canvas')[0].toBlob((blob) => {
              let URLObj = window.URL || window.webkitURL;
              let a = document.createElement("a");
@@ -372,6 +350,7 @@
              document.body.appendChild(a);
              document.body.removeChild(a);
 
+          // AJAX request
           $(document).ready (function(){
               var pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // PNG is the default
               $("#insertGallery").submit(function(event) {
@@ -380,6 +359,7 @@
                console.log("button clicked");
                let form = $('#insertGallery')[0];
                let data = new FormData(form);
+               // here I append my two data that weren't in the form, the img(blob) and the new random subject
                data.append("a_new_subject",newSub);
                data.append("filename",blob);
 
